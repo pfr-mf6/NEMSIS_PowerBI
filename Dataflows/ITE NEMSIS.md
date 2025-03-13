@@ -82,3 +82,32 @@ in
     SelectedColumns
 
 ```
+
+
+
+
+### Dim_Situation
+
+
+```m
+
+let
+  Source = Sql.Database("pfbsql3", "Elite_DWPortland"),
+  Navigation = Source{[Schema = "DwEms", Item = "Dim_Situation"]}[Data],
+
+
+  // FilterAgency = Table.SelectRows(Navigation, each ([Incident_Agency_Short_Name] = "portlandfi")),
+  FilterTimes = Table.SelectRows(Navigation, each [CreatedOn] > #datetime(2024, 8, 19, 9, 0, 0)),
+
+  // Select only the columns you want to keep
+  SelectedColumns = Table.SelectColumns(
+    FilterTimes,
+    {
+        "Dim_Situation_PK",
+        "Situation_Provider_Primary_Impression"
+    }
+  )
+in
+    SelectedColumns
+
+```
